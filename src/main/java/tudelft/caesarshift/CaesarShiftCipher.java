@@ -3,26 +3,29 @@ package tudelft.caesarshift;
 public class CaesarShiftCipher {
 
     public String CaesarShiftCipher(String message, int shift){
+        if (message == null) return "invalid";
+
         StringBuilder sb = new StringBuilder();
-        char currentChar;
-        int length = message.length();
+        shift = shift % 26; // Asegurar que el desplazamiento esté dentro del rango
 
-        shift = shift%26;
-
-        for(int i = 0; i < length; i++){
-            currentChar = message.charAt(i);
-           
-            sb.append(currentChar);
-            if (currentChar > 'z' || currentChar < 'a') {
-                return "invalid";
-            } else if ((char) (currentChar + shift) > 'z') {
-                currentChar = (char) (currentChar - 26);
-            } else if ((char) (currentChar + shift) < 'a'){
-                currentChar = (char) (currentChar + 26);
+        for (char currentChar : message.toCharArray()) {
+            if (currentChar < 'a' || currentChar > 'z') {
+                return "invalid"; // Si hay un carácter no válido, devolver "invalid"
             }
-            sb.append((char) (currentChar + shift));
+
+            char newChar = (char) (currentChar + shift);
+
+            // Ajustar si sale del rango de 'a' a 'z'
+            if (newChar > 'z') {
+                newChar = (char) (newChar - 26);
+            } else if (newChar < 'a') {
+                newChar = (char) (newChar + 26);
+            }
+
+            sb.append(newChar);
         }
 
         return sb.toString();
     }
 }
+
